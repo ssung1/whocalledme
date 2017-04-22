@@ -6,5 +6,4 @@ The app is written in Python 3.6.1 in a virtual environment
 Required packages:
 
     - Flask             for building RESTful service
-    - Flask-Testing     for testing RESTful service
     - beautifulsoup4    for scraping HTML

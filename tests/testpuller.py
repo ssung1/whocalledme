@@ -271,29 +271,78 @@ class TestPuller( unittest.TestCase ):
     def test_real_html_find_ul_previews( self ):
         previews = puller.find_previews( self.for_real )
         self.assertEqual( len( previews ), 1 )
-        
+
     def test_real_html_find_list_items( self ):
         previews = puller.find_previews( self.for_real )
-        list_items = puller.find_list_items( previews[0] )
+        list_items = puller.find_item_list( previews[0] )
+        self.assertEqual( len( list_items ), 11 )
 
     # fix later        
     def test_list_item_find_count( self ):
         item = BeautifulSoup( self.list_item, "html.parser" )
-        count = item.div.div.span.string    
-        self.assertEquals( count.strip(), "4" )
+        count = puller.find_count( item )
+        self.assertEqual( count, "4" )
             
     # fix later        
     def test_list_item_find_phone_number( self ):
         item = BeautifulSoup( self.list_item, "html.parser" )
-        main_div = item.div.find_all(
-            name = "div", attrs = { "class": "oos_previewMain" } )
-        self.assertEquals( len( main_div ), 1 )
-        self.assertEquals( main_div[0].h4.a.string.strip(),
-            "(426)-371-8225" )
-                
-        
-        
-                
+        phone_number = puller.find_phone_number( item )
+        self.assertEqual( phone_number, "(426)-371-8225" )
+
+    def test_list_item_find_area_code( self ):
+        item = BeautifulSoup( self.list_item, "html.parser" )
+        area_code = puller.find_area_code( item )
+        self.assertEqual( area_code, "426" )
+
+    def test_list_item_find_comment( self ):
+        item = BeautifulSoup( self.list_item, "html.parser" )
+        comment = puller.find_comment( item )
+        self.assertTrue( comment.startswith(
+            "Sundickag ker vawveb pir pahi kuz votoz do upnebuz codca" ) )
+
+    def test_real_html_extract_bad_number_list_count( self ):
+        bn_list = puller.find_bad_number_list( self.for_real )
+        self.assertEqual( len( bn_list ), 11 )
+
+    def test_real_html_extract_bad_number_area_code( self ):
+        bn_list = puller.find_bad_number_list( self.for_real )
+        area_code_list = [x.area_code for x in bn_list]
+        self.assertEqual( area_code_list,
+            ["844", "770", "877", "510", "602", "714",
+             "325", "242", "719", "961", "426"] )
+
+    def test_real_html_extract_bad_number_phone_number( self ):
+        bn_list = puller.find_bad_number_list( self.for_real )
+        phone_number_list = [x.phone_number for x in bn_list]
+        self.assertEqual( phone_number_list,
+            ["844-857-5628", "770-232-6548", "877-662-5128",
+             "510-257-4110", "602-566-9762", "714-549-8179",
+             "325-457-7075", "242-863-8658", "719-475-2667",
+             "961-825-5572", "(426)-371-8225"] )
+
+    def test_real_html_extract_bad_number_comment_count( self ):
+        bn_list = puller.find_bad_number_list( self.for_real )
+        cc_list = [x.comment_count for x in bn_list]
+        self.assertEqual( cc_list, [2, 1, 53, 3, 2, 48, 6, 1, 13, 97, 4] )
+
+    def test_real_html_extract_bad_number_comment( self ):
+        bn_list = puller.find_bad_number_list( self.for_real )
+
+        comment_list = [x.comment for x in bn_list]
+        comment_test =[ "The company calling is loan me but they're",
+            "Scammer posing as breeder for puppies!",
+            "A scam",
+            "Calls saying calling aboit a federal case and I hung up",
+            "Calls from this # keep coming into our office,",
+            "Zisafca me pamnad gekevfiz imag ozacupkej cu bagaer cev av mow",
+            "Matuca sukmowiro to cihdamvet im do hocjimor na okbi",
+            "Omga pap josil reflo pi nerfij igze sin ba raz ra vameg fu",
+            "Ibkoaj taze lu capakgin lutniwem fo vakvozus gowoore dovva",
+            "Gok piblinvuc nide monbazne mizde nesbidaru fuagu adsaas",
+            "Sundickag ker vawveb pir pahi kuz votoz do upnebuz codca" ]
+
+        for ( ct, c ) in zip( comment_test, comment_list ):
+            self.assertTrue( c.startswith( ct ) )
 
 if __name__ == "__main__":
     unittest.main()        

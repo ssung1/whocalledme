@@ -2,13 +2,14 @@
 
 import puller
 from flask import Flask, jsonify
+import config
 
 app = Flask(__name__)
 
-@app.route( "/phone_numbers" )
+@app.route( "/bad_numbers" )
 def all_phone_numbers():
     badnumber_list = [ x.__dict__ 
-        for x in puller.pull_page( "" ) ]
+        for x in puller.pull_page( config.source_url ) ]
     return jsonify( badnumber_list )
     
     
