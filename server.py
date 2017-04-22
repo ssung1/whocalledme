@@ -1,8 +1,8 @@
 #!Scripts/python
 
-import puller
 from flask import Flask, jsonify, request
 import config
+import database
 
 app = Flask(__name__)
 
@@ -10,11 +10,16 @@ app = Flask(__name__)
 def all_phone_numbers():
     area_code = request.args.get( "area_code" )
     if area_code != None:
-        badnumber_list = []
+        badnumber_list = database.find_by_area_code( area_code )
     else:
-        badnumber_list = [ x.__dict__
-            for x in puller.pull_page( config.source_url ) ]
-    return jsonify( badnumber_list )
+        badnumber_list = database.find_all()
+
+    badnumber_dict = [ x.__dict__ for x in badnumber_list ]
+    return jsonify( badnumber_dict )
 
 if __name__ == "__main__":
-    app.run( debug = True )
+    if config.auto_refresh:
+        database.start_background_refresh()
+        app.run( debug = False )
+    else:
+        app.run( debug = True )
