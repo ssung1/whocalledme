@@ -6,7 +6,7 @@ import database
 
 app = Flask(__name__)
 
-@app.route( "/v1.0/bad_numbers" )
+@app.route( "/v1.0/bad_numbers", methods = [ "GET" ] )
 def all_phone_numbers():
     area_code = request.args.get( "area_code" )
     if area_code != None:

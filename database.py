@@ -18,7 +18,7 @@ def get_all_the_bad_numbers():
         print( "scraping..." )
         refresh()
     else:
-        print( "reusing cached..." )
+        print( "reusing cache..." )
 
     return all_the_bad_numbers
 
@@ -30,10 +30,6 @@ def refresh():
     all_the_bad_numbers += pulled
     initialized = True
 
-def store( bn ):
-    global all_the_bad_numbers
-    all_the_bad_numbers.append( bn )
-
 def find_all():
     return get_all_the_bad_numbers()
 
@@ -44,7 +40,7 @@ def find_by_area_code( area_code ):
 def background_refresh():
     global auto_refresh
     while auto_refresh:
-        print( "auto_refreshing source page..." )
+        print( "auto-refreshing source page..." )
         refresh()
         time.sleep( 15 )
 
