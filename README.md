@@ -1,7 +1,10 @@
 This app pulls the information from a call complaint forum and serves it in a
 RESTful web service.
 
-The app is written in Python 3.6.1 in a virtual environment
+The app is written in Python 3.6.1 in a virtual environment.  To
+build the virtual environment in the application home directory, do
+
+    python -m venv .
 
 Required packages:
 
