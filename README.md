@@ -10,15 +10,20 @@ Required packages:
 
     Flask             for building RESTful service
     beautifulsoup4    for scraping HTML
+    
+Install by:
+
+    Scripts/python -m pip install -r requirements.txt
 
 To run:
 
-    run server.py
+    Scripts/python server.py
 
-Go to `http://localhost:5000/bad_numbers` to retrieve a list of all numbers.
+Go to `http://localhost:5000/v1.0/bad_numbers` to retrieve a list of all
+numbers.
 
-Go to `http://localhost:5000/bad_numbers?area_code={area_code}` to see all the
-numbers in that area code.
+Go to `http://localhost:5000/v1.0/bad_numbers?area_code={area_code}` to see all
+the numbers in that area code.
 
 ### Additional Settings
 
